@@ -1,8 +1,26 @@
-![image](../images/confluent-logo-300-2.png)
+# Confluent MRC Workshop for Systems Engineers
 
 # Overview
 
-This demo showcases Confluent Platform's Multi-Region Replication capability built directly into Confluent Server starting with release 5.4.
+This workshop will start with deploying a local cluster with MRC set up and follow through with deploying a few different topologies to achive sync or async topics.
+
+
+# PREWORK
+
+The goal of the prework section is to download all the tooling required and get the cluster running before we lose good internet on the cruise ship. Please complete this by Sunday Evening, or be prepared for long download times on the boat.
+
+## Perequsites
+
+1) Have docker installed on your laptop
+2) Have git installed on your laptop
+
+## Step 1
+
+git clone this repository from CLI
+
+```
+https://github.com/cwgdata/mrc_workshop
+```
 
 For more information:
 
