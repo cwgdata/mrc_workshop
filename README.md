@@ -1,5 +1,7 @@
 # Confluent MRC Workshop for Systems Engineers
 
+Based on the MRC demo so we can use that as followup, but with key settings removed so everyone can learn what it takes to add MRC to a cluster or configuration.
+
 # Overview
 
 This workshop will start with deploying a local cluster with MRC set up and follow through with deploying a few different topologies to achive sync or async topics.
@@ -21,6 +23,27 @@ git clone this repository from CLI
 ```
 https://github.com/cwgdata/mrc_workshop
 ```
+
+## Step 2
+
+Now we need to add the MRC settings for rack awareness and the new replica selector.
+
+First, open the docker_compose.yml and add the following to the two "west" brokers in the environment section:
+
+```
+      KAFKA_BROKER_RACK: 'west'
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+```
+
+Then add the following to the two "east" brokers:
+
+```
+      KAFKA_BROKER_RACK: 'east'
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+```
+
+These settings allow confluent-server to know that we are using rack awareness and what "rack" each one is set to. These racks will represent regional datacenters for the purpose of this exercise.
+
 
 For more information:
 
