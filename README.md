@@ -45,18 +45,13 @@ Then add the following to the two "east" brokers:
 These settings allow confluent-server to know that we are using rack awareness and what "rack" each one is set to. These racks will represent regional datacenters for the purpose of this exercise.
 
 
-For more information:
+## Step 3
 
-* [Blog post: Built-In Multi-Region Replication with Confluent Platform 5.4-preview](https://www.confluent.io/blog/multi-region-data-replication?utm_source=github&utm_medium=demo&utm_campaign=ch.examples_type.community_content.multiregion)
-* [Confluent Platform documentation](https://docs.confluent.io/current/multi-dc-replicator/multi-region-rep.html?utm_source=github&utm_medium=demo&utm_campaign=ch.examples_type.community_content.multiregion)
-
-NOTE: There is a [different demo](../multi-datacenter/README.md) for a multi-datacenter design with two instances of Confluent Replicator copying data bidirectionally between the datacenters.
-
-## Multi-region Architecture
-
-This demo has the following architecture.
+This workshop has the following architecture.
 There are three regions `west`, `central`, and `east`.
 The naming convention of the brokers are `broker-[region]-[broker_id]`.
+
+We will have brokers in the east and west region and a single zookeeper in each region.
 
 ![image](images/multi-region-base-v2.png)
 
