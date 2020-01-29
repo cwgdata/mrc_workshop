@@ -257,6 +257,18 @@ docker-compose exec broker-east-3 kafka-topics --describe \
 	--bootstrap-server broker-east-3:19093 --topic multi-region-async
 ```
 
+```
+docker-compose exec broker-west-1 kafka-producer-perf-test --topic multi-region-async \
+    --num-records 5000 \
+    --record-size 1000 \
+    --throughput -1 \
+    --producer-props \
+        acks=all \
+        bootstrap.servers=broker-west-1:19091,broker-east-3:19093 \
+        compression.type=none \
+        batch.size=8196
+```
+
 Now create an config/consumer-east.config with
 
 ```
