@@ -236,5 +236,46 @@ OPTIONAL (try the above for the async topic, and east brokers)
 
 # Lab 5 - Async Leader Failover
 
+In sync replication we are able to elect leaders across the wire but because Observers in an async pattern can be behind in consumption. So we need to force the leader election as it is not a "clean" leader election. Note that this can result in a Recovery Point that is not 0 and thus data can be lost.
+
+Lets stop our brokers in the west:
+
+```
+docker-compose stop broker-west-1 broker-west-2 zookeeper-west
+```
+
+Now the brokers in the east cant be elected, thus we force an unclean leader to the east:
+
+```
+docker-compose exec broker-east-4 kafka-leader-election --bootstrap-server broker-east-4:19094 --election-type UNCLEAN --topic multi-region-async --partition 0
+```
+
+Lets see what this looks like:
+
+```
+docker-compose exec broker-east-3 kafka-topics --describe \
+	--bootstrap-server broker-east-3:19093 --topic multi-region-async
+```
+
+Now create an config/consumer-east.config with
+
+```
+client.rack=east
+```
+
+And run a consumer:
+
+```
+docker-compose exec broker-east-3 kafka-consumer-perf-test --topic multi-region-async \
+    --messages 1000 \
+    --threads 20 \
+    --broker-list broker-west-1:19091,broker-east-3:19093 \
+    --timeout 20000 \
+    --consumer.config /etc/kafka/demo/consumer-east.config
+```
+
+
+Play with different scenerios if you have time left.
+
 
 
