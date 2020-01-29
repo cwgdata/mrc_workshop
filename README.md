@@ -101,7 +101,7 @@ By default, observers do not participate in the ISR list and cannot automaticall
 
 ## Lab 1 - Create an Asynchronus Topic
 
-First, open your favorite text editor to create the file config/placement-multi-region-sync.json.
+First, open your favorite text editor to create the file config/placement-multi-region-async.json.
 
 We will use observer replicas in the east datacenter, and replicate asynchronusly to those observers.
 
@@ -128,6 +128,56 @@ Paste the following to create the topology with 2 replicas in DC West and 2 Obse
     ]
 }
 ```
+
+Once that file is saved, create the topic with the following command:
+
+```
+docker-compose exec broker-west-1 kafka-topics  --create \
+	--bootstrap-server broker-west-1:19091 \
+	--topic multi-region-async \
+	--partitions 1 \
+	--replica-placement /etc/kafka/demo/placement-multi-region-async.json \
+	--config min.insync.replicas=1
+```
+
+Now lets check the configuration  for that topic:
+
+```
+docker-compose exec broker-east-3 kafka-topics --describe \
+	--bootstrap-server broker-east-3:19093 --topic multi-region-async
+```
+
+You should see that the observers are shown and we have replicas on each of the 4 brokers.
+
+## Lab 2 - Create an Synchronus Topic
+
+First, open your favorite text editor to create the file config/placement-multi-region-sync.json.
+
+For this topic we have normal replicas in both east and west datacenters!
+
+Paste the following to create the topology with 2 replicas in DC West and 2 replicas in DC East.
+
+
+```
+{
+    "version": 1,
+    "replicas": [
+        {
+            "count": 2,
+            "constraints": {
+                "rack": "west"
+            }
+        },
+        {
+            "count": 2,
+            "constraints": {
+                "rack": "east"
+            }
+        }
+    ]
+}
+```
+
 
 Once that file is saved, create the topic with the following command:
 
