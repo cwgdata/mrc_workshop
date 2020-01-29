@@ -258,7 +258,7 @@ docker-compose exec broker-east-3 kafka-topics --describe \
 ```
 
 ```
-docker-compose exec broker-west-1 kafka-producer-perf-test --topic multi-region-async \
+docker-compose exec broker-east-3 kafka-producer-perf-test --topic multi-region-async \
     --num-records 5000 \
     --record-size 1000 \
     --throughput -1 \
