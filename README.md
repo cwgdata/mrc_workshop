@@ -97,4 +97,47 @@ By default, observers do not participate in the ISR list and cannot automaticall
 
 ![image](images/Follower_Fetching.png)
 
-## That completes the Prework, this section will be updated with the in person parts of the workshop on Sunday the 26th!
+# Workshop Steps
+
+## Lab 1 - Create an Asynchronus Topic
+
+First, open your favorite text editor to create the file config/placement-multi-region-sync.json.
+
+We will use observer replicas in the east datacenter, and replicate asynchronusly to those observers.
+
+Paste the following to create the topology with 2 replicas in DC West and 2 Observers in DC East.
+
+```
+{
+    "version": 1,
+    "replicas": [
+        {
+            "count": 2,
+            "constraints": {
+                "rack": "west"
+            }
+        }
+    ],
+    "observers": [
+        {
+        "count": 2,
+            "constraints": {
+                "rack": "east"
+            }
+        }
+    ]
+}
+```
+
+Once that file is saved, create the topic with the following command:
+
+```
+docker-compose exec broker-west-1 kafka-topics  --create \
+	--bootstrap-server broker-west-1:19091 \
+	--topic multi-region-sync \
+	--partitions 1 \
+	--replica-placement /etc/kafka/demo/placement-multi-region-sync.json \
+	--config min.insync.replicas=1
+```
+
+
