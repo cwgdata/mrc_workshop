@@ -190,4 +190,9 @@ docker-compose exec broker-west-1 kafka-topics  --create \
 	--config min.insync.replicas=1
 ```
 
+Now lets check the configuration  for that topic:
 
+```
+docker-compose exec broker-east-3 kafka-topics --describe \
+	--bootstrap-server broker-east-3:19093 --topic multi-region-sync
+```
