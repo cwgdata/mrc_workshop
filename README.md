@@ -215,7 +215,7 @@ docker-compose exec broker-west-1 kafka-producer-perf-test --topic multi-region-
 
 And for the consumer we need to specify the region!
 
-Open config/consumer-east.config with your editor and add the following
+Open config/consumer-west.config with your editor and add the following
 
 ```
 client.rack=west
