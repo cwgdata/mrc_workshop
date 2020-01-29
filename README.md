@@ -196,3 +196,45 @@ Now lets check the configuration  for that topic:
 docker-compose exec broker-east-3 kafka-topics --describe \
 	--bootstrap-server broker-east-3:19093 --topic multi-region-sync
 ```
+
+## Lab 3 - Producers and Consumers
+
+Next we will set up a producer to the sync replication topic.
+
+```
+docker-compose exec broker-west-1 kafka-producer-perf-test --topic multi-region-sync \
+    --num-records 5000 \
+    --record-size 1000 \
+    --throughput -1 \
+    --producer-props \
+        acks=all \
+        bootstrap.servers=broker-west-1:19091,broker-east-3:19093 \
+        compression.type=none \
+        batch.size=8196
+```
+
+And for the consumer we need to specify the region!
+
+Open config/consumer-east.config with your editor and add the following
+
+```
+client.rack=west
+```
+
+Now run the consumer!
+
+```
+docker-compose exec broker-east-3 kafka-consumer-perf-test --topic multi-region-sync \
+    --messages 1000 \
+    --threads 20 \
+    --broker-list broker-west-1:19091,broker-east-3:19093 \
+    --timeout 20000 \
+    --consumer.config /etc/kafka/demo/consumer-west.config
+```
+
+OPTIONAL (try the above for the async topic, and east brokers)
+
+# Lab 5 - Async Leader Failover
+
+
+
